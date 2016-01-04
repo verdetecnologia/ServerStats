@@ -15,5 +15,5 @@ class AppServer extends HttpServer {
     router
     .filter[CommonFilters]
     .add[ServerStatsController]
-  }  
+  }
 }

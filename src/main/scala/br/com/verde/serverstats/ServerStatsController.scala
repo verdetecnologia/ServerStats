@@ -20,7 +20,7 @@ class ServerStatsController @Inject() extends Controller {
 
   val megabyte = 1024 * 1024
   val second = 1000 // milisecond
-  
+
   get("/serverStats") {
     request: Request =>
 
@@ -29,17 +29,25 @@ class ServerStatsController @Inject() extends Controller {
       val availableProcessors = osBean.getAvailableProcessors
 
       val freeSpace = File.listRoots.head.getFreeSpace
-      
+
       val serverSystemLoad = osBean.getSystemLoadAverage
       val serverUptime = runtimeBean.getUptime
 
-      response
-        .ok
-        .json(s"""{ "jvm_total_ram": "${jvmTotalRam / megabyte} Mb",
+      val param = request.getParam("onlyRam")
+      if (param == null) {
+        response
+          .ok
+          .json(s"""{ "jvm_total_ram": "${jvmTotalRam / megabyte} Mb",
           "jvm_free_ram": "${jvmFreeRam / megabyte} Mb",
           "free_space": "${freeSpace / megabyte} Mb",
           "server_system_load": "${serverSystemLoad} %",
           "server_uptime": "${serverUptime / second} s",
           "available_processors": "${availableProcessors}" }""")
+      } else {
+        response
+          .ok
+          .json(s"""{ "jvm_total_ram": "${jvmTotalRam / megabyte} Mb",
+          "jvm_free_ram": "${jvmFreeRam / megabyte} Mb" }""")
+      }
   }
 }
