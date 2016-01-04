@@ -1,0 +1,12 @@
+/target/
+*/target
+*/project
+/logs/
+/bin/
+/.settings/
+/.project
+/.cache
+/.classpath
+/.DS_Store
+.cache-main
+.idea*
